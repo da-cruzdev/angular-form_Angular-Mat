@@ -1,4 +1,33 @@
 <mat-card class="card">
-  <mat-card-header class="card__header">S'enregistrer</mat-card-header>
-  <mat-card-content></mat-card-content>
+  <mat-card-header class="card__header mat-primary">
+    S'enregistrer
+  </mat-card-header>
+
+  <mat-card-content>
+    <form>
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width">
+            <mat-label>Nom</mat-label>
+            <input matInput class="formControl" required />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width">
+            <mat-label>Prénoms</mat-label>
+            <input matInput class="formControl" />
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width">
+            <mat-label>Email</mat-label>
+            <input matInput class="formControl" />
+          </mat-form-field>
+        </div>
+      </div>
+      <div class="text-right">
+        <button mat-raised-button color="primary">Sauvegarder</button>
+      </div>
+    </form>
+  </mat-card-content>
 </mat-card>
