@@ -4,30 +4,165 @@
   </mat-card-header>
 
   <mat-card-content>
-    <form>
+    <form novalidate (ngSubmit)="saveData(registerForm)" #registerForm="ngForm">
       <div class="row">
         <div class="col-md-6 mb-3">
           <mat-form-field class="example-full-width">
             <mat-label>Nom</mat-label>
-            <input matInput class="formControl" required />
+            <input
+              matInput
+              class="formControl"
+              [required]="true"
+              [minlength]="5"
+              [(ngModel)]="user.lastName"
+              name="lastName"
+              #lastNameVar="ngModel"
+              [ngClass]="{
+                'mat-invalid': lastNameVar.touched && !lastNameVar.valid
+              }"
+            />
+            <mat-error
+              *ngIf="lastNameVar.errors && lastNameVar.errors['required']"
+            >
+              Entrez votre nom
+            </mat-error>
+            <mat-error
+              *ngIf="lastNameVar.errors && lastNameVar.errors['minlength']"
+            >
+              Le nom doit avoir au moins 5 caractères
+            </mat-error>
           </mat-form-field>
         </div>
+
         <div class="col-md-6 mb-3">
           <mat-form-field class="example-full-width">
             <mat-label>Prénoms</mat-label>
-            <input matInput class="formControl" />
+            <input
+              matInput
+              class="formControl"
+              [required]="true"
+              [maxlength]="20"
+              [(ngModel)]="user.firstName"
+              name="firstName"
+              #firstNameVar="ngModel"
+              [ngClass]="{
+                'mat-invalid': firstNameVar.touched && !firstNameVar.valid
+              }"
+            />
+            <mat-error
+              *ngIf="firstNameVar.errors && firstNameVar.errors['required']"
+            >
+              Entrez votre prénom
+            </mat-error>
+            <mat-error
+              *ngIf="firstNameVar.errors && firstNameVar.errors['maxlength']"
+            >
+              Maximun 20 caractères
+            </mat-error>
           </mat-form-field>
         </div>
         <div class="col-md-6 mb-3">
           <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
-            <input matInput class="formControl" />
+            <input
+              matInput
+              class="formControl"
+              [required]="true"
+              [email]="true"
+              [(ngModel)]="user.email"
+              name="email"
+              #emailVar="ngModel"
+              [ngClass]="{
+                'mat-invalid': emailVar.touched && !emailVar.valid
+              }"
+            />
+            <mat-error *ngIf="emailVar.errors && emailVar.errors['required']">
+              Entrez votre email
+            </mat-error>
+            <mat-error *ngIf="emailVar.errors && emailVar.errors['email']">
+              Email invalide
+            </mat-error>
           </mat-form-field>
         </div>
       </div>
+      <div class="row mb-3">
+        <div class="col-md-12">
+          <mat-checkbox
+            class="example-margin"
+            name="sendCatalog"
+            [(ngModel)]="user.sendCatalog"
+            >Oui je souhaite recevoir la pub</mat-checkbox
+          >
+        </div>
+      </div>
+
+      <div *ngIf="user.sendCatalog">
+        <div class="row-mb-3">
+          <div class="col-md-12">
+            <mat-form-field class="example-full-width">
+              <mat-label>Adresse 1</mat-label>
+              <input matInput class="formControl" />
+            </mat-form-field>
+          </div>
+        </div>
+        <div class="row-mb-3">
+          <div class="col-md-12">
+            <mat-form-field class="example-full-width">
+              <mat-label>Adresse 2</mat-label>
+              <input matInput class="formControl" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <mat-form-field class="example-full-width">
+              <mat-label>Ville</mat-label>
+              <input matInput class="formControl" />
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 mb-3">
+            <mat-form-field class="example-full-width">
+              <mat-label>Département</mat-label>
+              <mat-select matNativeControlclass="formControl">
+                <mat-option value="">Sélectionnez un département</mat-option>
+                <mat-option value="A">A</mat-option>
+                <mat-option value="B">B</mat-option>
+                <mat-option value="C">C</mat-option>
+                <mat-option value="D">D</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div class="col-md-3 mb-3">
+            <mat-label>Code postal</mat-label>
+            <input matInput type="number" class="formControl" />
+          </div>
+        </div>
+      </div>
+
       <div class="text-right">
-        <button mat-raised-button color="primary">Sauvegarder</button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!registerForm.valid"
+        >
+          Sauvegarder
+        </button>
       </div>
     </form>
   </mat-card-content>
 </mat-card>
+<hr />
+
+<p>Dirty :{{ registerForm.dirty }}</p>
+
+<p>Pristine :{{ registerForm.pristine }}</p>
+
+<p>Valid :{{ registerForm.valid }}</p>
+
+<p>Invalid :{{ registerForm.invalid }}</p>
+
+<pre>
+  Value: {{ registerForm.value | json }}
+</pre>
