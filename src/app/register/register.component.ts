@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { User } from './user';
-import { NgForm } from '@angular/forms';
+import { FormGroup, FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-register',
@@ -10,12 +10,21 @@ import { NgForm } from '@angular/forms';
 export class RegisterComponent implements OnInit {
   public user: User = new User();
 
+  public registerForm!: FormGroup;
+
   constructor() {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.registerForm = new FormGroup({
+      firstName: new FormControl(),
+      lastName: new FormControl(),
+      email: new FormControl(),
+      sendCatalog: new FormControl(true),
+    });
+  }
 
-  public saveData(registerForm: NgForm): void {
-    console.log(registerForm.form);
-    console.log('Valeurs : ', JSON.stringify(registerForm.value));
+  public saveData(): void {
+    console.log(this.registerForm);
+    console.log('Valeurs : ', JSON.stringify(this.registerForm.value));
   }
 }
