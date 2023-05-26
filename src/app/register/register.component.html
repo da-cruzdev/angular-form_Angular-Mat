@@ -14,18 +14,16 @@
               class="formControl"
               formControlName="lastName"
               [ngClass]="{
-                'mat-invalid':
-                  registerForm.get('lastName')?.invalid &&
-                  registerForm.get('lastName')?.touched
+                'mat-invalid': isControlInvalidAndUntouched('lastName')
               }"
             />
             <mat-error
-              *ngIf="registerForm.get('lastName')?.errors?.['required'] && registerForm.get('lastName')?.touched"
+              *ngIf="isControlInvalidAndUntouched('lastName', 'required')"
             >
               Entrez votre nom
             </mat-error>
             <mat-error
-              *ngIf="registerForm.get('lastName')?.errors?.['minlength'] && registerForm.get('lastName')?.touched"
+              *ngIf="isControlInvalidAndUntouched('lastName', 'minlength')"
             >
               Le nom doit avoir au moins 5 caractères
             </mat-error>
@@ -39,18 +37,16 @@
               class="formControl"
               formControlName="firstName"
               [ngClass]="{
-                'mat-invalid':
-                  registerForm.get('firstName')?.invalid &&
-                  !registerForm.get('firstName')?.touched
+                'mat-invalid': isControlInvalidAndUntouched('firstName')
               }"
             />
             <mat-error
-              *ngIf="registerForm.get('firstName')?.errors?.['required'] && registerForm.get('firstName')?.touched"
+              *ngIf="isControlInvalidAndUntouched('firstName', 'required')"
             >
               Entrez votre prénom
             </mat-error>
             <mat-error
-              *ngIf="registerForm.get('firstName')?.errors?.['minlength'] && registerForm.get('firstName')?.touched"
+              *ngIf="isControlInvalidAndUntouched('firstName', 'maxlength')"
             >
               Maximum 30 caractères
             </mat-error>
@@ -64,19 +60,15 @@
               class="formControl"
               formControlName="email"
               [ngClass]="{
-                'mat-invalid':
-                  registerForm.get('email')?.invalid &&
-                  !registerForm.get('email')?.touched
+                'mat-invalid': isControlInvalidAndUntouched('email')
               }"
             />
             <mat-error
-              *ngIf="registerForm.get('email')?.errors?.['required'] && registerForm.get('email')?.touched"
+              *ngIf="isControlInvalidAndUntouched('email', 'required')"
             >
               Entrez votre email
             </mat-error>
-            <mat-error
-              *ngIf="registerForm.get('email')?.errors?.['email'] && registerForm.get('email')?.touched"
-            >
+            <mat-error *ngIf="isControlInvalidAndUntouched('email', 'email')">
               L'email n'est pas valide !
             </mat-error>
           </mat-form-field>

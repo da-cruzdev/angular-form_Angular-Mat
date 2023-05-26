@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { User } from './user';
 import {
   FormGroup,
-  FormControl,
   FormBuilder,
   Validators,
   AbstractControl,
@@ -71,5 +70,18 @@ export class RegisterComponent implements OnInit {
     }
 
     phoneControl?.updateValueAndValidity();
+  }
+
+  public isControlInvalidAndUntouched(
+    controlName: string,
+    errorKey?: string
+  ): boolean {
+    const control = this.registerForm.get(controlName);
+    const errors = control?.errors;
+    return (
+      control?.invalid &&
+      control?.touched &&
+      (errorKey ? errors?.[errorKey] : true)
+    );
   }
 }
