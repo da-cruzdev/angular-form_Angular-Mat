@@ -12,8 +12,6 @@
             <input
               matInput
               class="formControl"
-              [required]="true"
-              [minlength]="5"
               formControlName="lastName"
               [ngClass]="{
                 'mat-invalid':
@@ -39,8 +37,6 @@
             <input
               matInput
               class="formControl"
-              [required]="true"
-              [maxlength]="20"
               formControlName="firstName"
               [ngClass]="{
                 'mat-invalid':
@@ -56,7 +52,7 @@
             <mat-error
               *ngIf="registerForm.get('firstName')?.errors?.['minlength'] && registerForm.get('firstName')?.touched"
             >
-              Maximum 20caractères
+              Maximum 30 caractères
             </mat-error>
           </mat-form-field>
         </div>
@@ -66,8 +62,6 @@
             <input
               matInput
               class="formControl"
-              [required]="true"
-              [email]="true"
               formControlName="email"
               [ngClass]="{
                 'mat-invalid':
