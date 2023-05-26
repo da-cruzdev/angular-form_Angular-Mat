@@ -24,6 +24,8 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.maxLength(30)]],
       lastName: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
+      phone: [''],
+      notification: 'email',
       sendCatalog: false,
     });
   }
@@ -34,11 +36,27 @@ export class RegisterComponent implements OnInit {
   }
 
   public fillFormData() {
-    this.registerForm.setValue({
+    this.registerForm.patchValue({
       lastName: ' Da-cruz',
       firstName: 'Wilfried',
       email: 'will@dev.com',
       sendCatalog: true,
     });
+  }
+  public handleNotificationChange(event: any) {
+    const selectedValue = event.value;
+    this.setNotificationSetting(selectedValue);
+  }
+
+  public setNotificationSetting(method: string) {
+    const phoneControl = this.registerForm.get('phone');
+
+    if (method === 'text') {
+      phoneControl?.setValidators(Validators.required);
+    } else {
+      phoneControl?.clearValidators();
+    }
+
+    phoneControl?.updateValueAndValidity();
   }
 }
