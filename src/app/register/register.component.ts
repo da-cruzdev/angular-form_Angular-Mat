@@ -5,7 +5,19 @@ import {
   FormControl,
   FormBuilder,
   Validators,
+  AbstractControl,
+  ValidatorFn,
 } from '@angular/forms';
+
+function ratingRangeValidator(min: number, max: number): ValidatorFn {
+  return (c: AbstractControl): { [key: string]: boolean } | null => {
+    if ((!!c.value && isNaN(c.value)) || c.value < min || c.value > max) {
+      return { rangeError: true };
+    }
+
+    return null;
+  };
+}
 
 @Component({
   selector: 'app-register',
@@ -24,7 +36,8 @@ export class RegisterComponent implements OnInit {
       firstName: ['', [Validators.required, Validators.maxLength(30)]],
       lastName: ['', [Validators.required, Validators.minLength(5)]],
       email: ['', [Validators.required, Validators.email]],
-      phone: [''],
+      phone: '',
+      rating: [null, ratingRangeValidator(1, 5)],
       notification: 'email',
       sendCatalog: false,
     });
