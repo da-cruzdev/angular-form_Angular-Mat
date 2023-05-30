@@ -42,6 +42,13 @@ export class RegisterComponent implements OnInit {
   public registerForm!: FormGroup;
   isMatch!: boolean;
 
+  errorMsg!: string;
+
+  private validationErrorMessages: { [key: string]: string } = {
+    required: 'Entrez votre email',
+    email: "L'email n'est pas valide",
+  };
+
   constructor(private fb: FormBuilder) {}
 
   ngOnInit(): void {
@@ -63,6 +70,12 @@ export class RegisterComponent implements OnInit {
 
     this.registerForm.get('notification')?.valueChanges.subscribe((value) => {
       this.setNotificationSetting(value);
+    });
+
+    const emailControl = this.registerForm.get('emailGroup.email');
+    emailControl?.valueChanges.subscribe((val) => {
+      this.setMessage(emailControl);
+      console.log(val);
     });
   }
 
@@ -107,6 +120,16 @@ export class RegisterComponent implements OnInit {
       (control?.invalid && control?.dirty) ||
       (control?.touched && (errorKey ? errors?.[errorKey] : true))
     );
+  }
+
+  private setMessage(val: AbstractControl): void {
+    this.errorMsg = '';
+
+    if ((val.touched || val.dirty) && val.errors) {
+      this.errorMsg = Object.keys(val.errors)
+        .map((key) => this.validationErrorMessages[key])
+        .join(' ');
+    }
   }
 
   // onChangeConfirmEmail(value: string): void {

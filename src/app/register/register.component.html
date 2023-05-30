@@ -69,17 +69,8 @@
                     registerForm.get('emailGroup.email')?.touched)
               }"
             />
-            <mat-error
-              *ngIf="
-              registerForm.get('emailGroup.email')?.errors?.['required']
-              "
-            >
-              Entrez votre email
-            </mat-error>
-            <mat-error
-              *ngIf="registerForm.get('emailGroup.email')?.errors?.['email']"
-            >
-              L'email n'est pas valide !
+            <mat-error>
+              {{ errorMsg }}
             </mat-error>
           </mat-form-field>
         </div>
