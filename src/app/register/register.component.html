@@ -52,6 +52,9 @@
             </mat-error>
           </mat-form-field>
         </div>
+      </div>
+
+      <div class="row" formGroupName="emailGroup">
         <div class="col-md-6 mb-3">
           <mat-form-field class="example-full-width">
             <mat-label>Email</mat-label>
@@ -60,16 +63,52 @@
               class="formControl"
               formControlName="email"
               [ngClass]="{
-                'mat-invalid': isControlInvalidAndUntouched('email')
+                'mat-invalid':
+                  registerForm.get('emailGroup')?.errors ||
+                  (registerForm.get('emailGroup.email')?.invalid &&
+                    registerForm.get('emailGroup.email')?.touched)
               }"
             />
             <mat-error
-              *ngIf="isControlInvalidAndUntouched('email', 'required')"
+              *ngIf="
+              registerForm.get('emailGroup.email')?.errors?.['required']
+              "
             >
               Entrez votre email
             </mat-error>
-            <mat-error *ngIf="isControlInvalidAndUntouched('email', 'email')">
+            <mat-error
+              *ngIf="registerForm.get('emailGroup.email')?.errors?.['email']"
+            >
               L'email n'est pas valide !
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div class="col-md-6 mb-3">
+          <mat-form-field class="example-full-width">
+            <mat-label>Confirmer l'email</mat-label>
+            <input
+              matInput
+              class="formControl"
+              formControlName="confirmEmail"
+              [ngClass]="{
+                'mat-invalid':
+                  registerForm.get('emailGroup')?.errors ||
+                  registerForm.get('emailGroup.confirmEmail')?.touched ||
+                  (registerForm.get('emailGroup.confirmEmail')?.dirty &&
+                    registerForm.get('emailGroup.confirmEmail')?.invalid)
+              }"
+            />
+            <mat-error
+              *ngIf="registerForm.get('emailGroup.confirmEmail')?.errors?.['required']"
+            >
+              Confirmez l'email
+            </mat-error>
+            <mat-error
+              *ngIf="
+                registerForm.get('emailGroup')?.errors?.['match']
+              "
+            >
+              L'email ne correspond pas !
             </mat-error>
           </mat-form-field>
         </div>

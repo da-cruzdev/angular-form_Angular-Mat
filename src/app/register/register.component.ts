@@ -18,6 +18,19 @@ function ratingRangeValidator(min: number, max: number): ValidatorFn {
   };
 }
 
+function emailMatcher(
+  control: AbstractControl
+): { [key: string]: boolean } | null {
+  const email = control.get('email');
+  const confirmEmail = control.get('confirmEmail');
+
+  if (email?.value !== confirmEmail?.value) {
+    return { match: true };
+  }
+
+  return null;
+}
+
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
@@ -27,6 +40,7 @@ export class RegisterComponent implements OnInit {
   public user: User = new User();
 
   public registerForm!: FormGroup;
+  isMatch!: boolean;
 
   constructor(private fb: FormBuilder) {}
 
@@ -34,7 +48,13 @@ export class RegisterComponent implements OnInit {
     this.registerForm = this.fb.group({
       firstName: ['', [Validators.required, Validators.maxLength(30)]],
       lastName: ['', [Validators.required, Validators.minLength(5)]],
-      email: ['', [Validators.required, Validators.email]],
+      emailGroup: this.fb.group(
+        {
+          email: ['', [Validators.required, Validators.email]],
+          confirmEmail: ['', Validators.required],
+        },
+        { validators: emailMatcher }
+      ),
       phone: '',
       rating: [null, ratingRangeValidator(1, 5)],
       notification: 'email',
@@ -51,7 +71,7 @@ export class RegisterComponent implements OnInit {
     this.registerForm.patchValue({
       lastName: ' Da-cruz',
       firstName: 'Wilfried',
-      email: 'will@dev.com',
+      emailGroup: { email: 'will@dev.com' },
       sendCatalog: true,
     });
   }
@@ -78,10 +98,21 @@ export class RegisterComponent implements OnInit {
   ): boolean {
     const control = this.registerForm.get(controlName);
     const errors = control?.errors;
+
     return (
-      control?.invalid &&
-      control?.touched &&
-      (errorKey ? errors?.[errorKey] : true)
+      (control?.invalid && control?.dirty) ||
+      (control?.touched && (errorKey ? errors?.[errorKey] : true))
     );
   }
+
+  // onChangeConfirmEmail(value: string): void {
+  //   const emailValue = this.registerForm.get('email')?.value;
+
+  //   //this.isMatch = emailValue === value;
+  // }
+
+  // isCMatch(a: string, b: string) {
+  //   console.log(a === b);
+  //   return a === b;
+  // }
 }
